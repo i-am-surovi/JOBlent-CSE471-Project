@@ -1,0 +1,39 @@
+{
+  "name": "job-portal",
+  "version": "1.0.0",
+  "description": "Full Stack Job Portal Application",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
+    "start": "concurrently \"npm run server:start\" \"npm run client:start\"",
+    "server:dev": "cd server && npm run dev",
+    "server:start": "cd server && npm start",
+    "client:dev": "cd client && npm run dev",
+    "client:start": "cd client && npm start",
+    "client:build": "cd client && npm run build",
+    "install:server": "cd server && npm install",
+    "install:client": "cd client && npm install",
+    "install:all": "npm install && npm run install:server && npm run install:client",
+    "clean": "npm run clean:server && npm run clean:client",
+    "clean:server": "cd server && rm -rf node_modules package-lock.json",
+    "clean:client": "cd client && rm -rf node_modules package-lock.json"
+  },
+  "keywords": [
+    "job",
+    "portal",
+    "fullstack",
+    "react",
+    "nodejs",
+    "express",
+    "mongodb"
+  ],
+  "author": "Your Name",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  }
+}
