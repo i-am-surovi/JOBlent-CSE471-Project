@@ -1,34 +1,21 @@
-import { createContext, useState } from 'react'
+import { createContext, useState } from "react";
 
 export const AppContext = createContext()
 
-export const AppContextProvider = ({ children }) => {
-    // Add the missing state and functions that Hero component needs
-    const [searchFilter, setSearchFilter] = useState({ title: '', location: '' })
-    const [isSearched, setISSearched] = useState(false)
-    
-    // Add any other state you need for your app
-    const [user, setUser] = useState(null)
-    const [jobs, setJobs] = useState([])
+export const AppContextProvider = (props) => {
+    const [searchFilter, setSearchFilter] = useState({
+        title:'',
+        location:''
+    })
+
+    const [isSearched, setIsSearched] = useState(false)
 
     const value = {
-        // Search functionality
-        searchFilter,
-        setSearchFilter,
-        isSearched,
-        setISSearched, // Note: keeping your naming convention
-        
-        // Other app state
-        user,
-        setUser,
-        jobs,
-        setJobs,
+        setSearchFilter, searchFilter,
+        isSearched, setIsSearched,
     }
 
-    return (
-        <AppContext.Provider value={value}>
-            {children}
-        </AppContext.Provider>
-    )
+    return (<AppContext.Provider value={value}>
+        {props.children}
+    </AppContext.Provider>)
 }
-    
