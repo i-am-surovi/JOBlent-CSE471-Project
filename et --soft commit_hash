@@ -1,0 +1,19 @@
+[33m659d25c[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{0}: reset: moving to HEAD~2
+[33md9f13df[m[33m ([m[1;31morigin/main[m[33m)[m HEAD@{1}: pull origin main: Fast-forward
+[33m659d25c[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{2}: reset: moving to HEAD~2
+[33md9f13df[m[33m ([m[1;31morigin/main[m[33m)[m HEAD@{3}: pull origin main: Fast-forward
+[33m643bd43[m HEAD@{4}: reset: moving to HEAD~2
+[33m0bbf952[m HEAD@{5}: reset: moving to HEAD~2
+[33m8480411[m HEAD@{6}: commit: update
+[33m7415e51[m HEAD@{7}: checkout: moving from main to main
+[33m7415e51[m HEAD@{8}: commit: Dipti's part 1
+[33m0bbf952[m HEAD@{9}: commit: filtered jobs done
+[33m7306da0[m HEAD@{10}: commit: footer added
+[33m643bd43[m HEAD@{11}: commit: Paging done
+[33mdb814f8[m HEAD@{12}: commit: Job search pages created
+[33md0e8904[m HEAD@{13}: commit: Solved Issues of Prachurja's code
+[33mabe413e[m HEAD@{14}: pull origin main: Fast-forward
+[33maa15927[m HEAD@{15}: pull origin main: Fast-forward
+[33m60ed525[m HEAD@{16}: checkout: moving from main to main
+[33m60ed525[m HEAD@{17}: Branch: renamed refs/heads/master to refs/heads/main
+[33m60ed525[m HEAD@{19}: commit (initial): Nothing
