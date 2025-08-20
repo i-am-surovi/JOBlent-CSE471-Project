@@ -1,16 +1,16 @@
 // src/components/Navbar.jsx
-import React from "react";
+import React, { useContext } from "react";
 import { assets } from "../assets/assets";
 import { useClerk, UserButton, useUser } from "@clerk/clerk-react";
 import { Link, useNavigate } from "react-router-dom";
+import { AppContext } from "../context/AppContext";
 
 const Navbar = () => {
   const { openSignIn } = useClerk();
   const { user, isSignedIn } = useUser();
   const navigate = useNavigate();
 
-  // Determine if the logged-in user is a recruiter
-  const isRecruiter = user?.publicMetadata?.isRecruiter === true;
+  const {setShowRecruiterLogin} = useContext(AppContext)
 
   return (
     <div className="shadow py-4">
@@ -23,16 +23,6 @@ const Navbar = () => {
 
         {isSignedIn ? (
           <div className="flex items-center gap-3">
-            {isRecruiter ? (
-              // Recruiter links
-              <Link
-                to="/recruiter/dashboard"
-                className="px-5 py-2 border border-blue-600 text-blue-600 rounded-full hover:bg-blue-50 transition-colors"
-              >
-                Job Posting
-              </Link>
-            ) : (
-              // Candidate links
               <>
                 <Link to="/applications">Applied Jobs</Link>
                 <p>|</p>
@@ -46,16 +36,14 @@ const Navbar = () => {
                   My Profile
                 </Link>
               </>
-            )}
             <UserButton />
           </div>
         ) : (
           // When not signed in
           <div className="flex gap-4 max-sm:text-xs items-center">
             <button
-              onClick={() => navigate("/recruiter/login")}
-              className="px-5 py-2 border border-blue-600 text-blue-600 rounded-full hover:bg-blue-50 transition-colors"
-            >
+              onClick={()=> setShowRecruiterLogin(true)}
+              className="text-gray-600">
               Recruiter Login
             </button>
             <button

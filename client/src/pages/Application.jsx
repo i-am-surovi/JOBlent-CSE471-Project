@@ -30,7 +30,7 @@ const Application = () => {
                 <img src={assets.profile_upload_icon} alt="" />
               </label>
               <button
-                onClick={(e) => setIsEdit(false)}
+                onClick={() => setIsEdit(false)}
                 className="bg-green-100 border border-green-400 rounded-lg px-4 py-2"
               >
                 Save
