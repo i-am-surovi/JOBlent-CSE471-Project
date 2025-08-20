@@ -77,3 +77,11 @@
 - git checkout main     
 - git reset --hard origin/main
 
+# Marquee
+- npm install react-fast-marquee
+
+# K-Converter
+- npm i k-convert
+
+# Moment
+- npm i moment
