@@ -1,37 +1,71 @@
-import { createContext, useEffect, useState } from "react";
-import { jobsData } from "../assets/assets";
+// src/context/AppContext.jsx
+import { createContext, useEffect, useState } from 'react';
+import { io } from 'socket.io-client';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { jobsData } from '../assets/assets';
 
-export const AppContext = createContext()
+export const AppContext = createContext();
 
-export const AppContextProvider = (props) => {
-    const [searchFilter, setSearchFilter] = useState({
-        title:'',
-        location:''
-    })
+export const AppContextProvider = ({ children }) => {
+  // === Your existing states ===
+  const [searchFilter, setSearchFilter] = useState({
+    title: '',
+    location: '',
+  });
 
-    const [isSearched, setIsSearched] = useState(false)
+  const [isSearched, setIsSearched] = useState(false);
+  const [jobs, setJobs] = useState([]);
+  const [showRecruiterLogin, setShowRecruiterLogin] = useState(false);
 
-    const [jobs, setJobs] = useState([])
+  // === New state for notifications ===
+  const [notifications, setNotifications] = useState([]);
 
-    const [showRecruiterLogin,setShowRecruiterLogin] = useState(false)
+  // === Fetch jobs (from static data for now) ===
+  const fetchJobs = async () => {
+    setJobs(jobsData);
+  };
 
-    // Function to fetch jobs
-    const fetchJobs = async () => {
-        setJobs(jobsData)
-    }
+  useEffect(() => {
+    fetchJobs();
+  }, []);
 
-    useEffect(()=>{
-        fetchJobs()
-    },[])
+  // === Setup socket.io ===
+  useEffect(() => {
+    const socket = io(import.meta.env.VITE_BACKEND_URL || 'http://localhost:1485', {
+      transports: ['websocket'],
+    });
 
-    const value = {
-        setSearchFilter, searchFilter,
-        isSearched, setIsSearched,
-        jobs, setJobs,
-        showRecruiterLogin, setShowRecruiterLogin,
-    }
+    socket.on('connect', () => {
+      console.log('Socket connected:', socket.id);
+    });
 
-    return (<AppContext.Provider value={value}>
-        {props.children}
-    </AppContext.Provider>)
-}
+    socket.on('newJob', (job) => {
+      setNotifications((prev) => [job, ...prev]);
+      setJobs((prev) => [job, ...prev]); // also add the job to jobs list
+      toast.info(`New job: ${job.title} @ ${job.company}`);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  // === Setup axios base URL globally ===
+  axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:1485';
+
+  // === Value exposed to all components ===
+  const value = {
+    searchFilter, setSearchFilter,
+    isSearched, setIsSearched,
+    jobs, setJobs,
+    showRecruiterLogin, setShowRecruiterLogin,
+    notifications, setNotifications,
+  };
+
+  return (
+    <AppContext.Provider value={value}>
+      {children}
+    </AppContext.Provider>
+  );
+};
