@@ -95,3 +95,4 @@
 - npm i quill
 
 
+- npm install @sentry/node --save
