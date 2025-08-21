@@ -23,9 +23,14 @@
 - Connect Backend with any other domain: **cors**
 - Store images : **cloudinary**    
 - Connect MongoDB Database : **mongoose** 
-- Upload any image : **multer**      
-- Add Payment gateway: **stripe**      
+- Upload any image : **multer**          
 - Webhooks for sending real-time info: **svix**
+## Run These Commands
+- npm i express
+- npm i jsonwebtoken
+- npm i bcrypt
+- npm i mongoose nodemon svix@1.42.0
+- npm i cors multer dotenv cloudinary
 
 
 # ReUse After Cloning    
@@ -88,3 +93,5 @@
 
 # Quill
 - npm i quill
+
+
