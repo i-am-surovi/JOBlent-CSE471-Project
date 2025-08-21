@@ -85,3 +85,6 @@
 
 # Moment
 - npm i moment
+
+# Quill
+- npm i quill

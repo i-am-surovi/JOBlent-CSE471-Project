@@ -57,11 +57,10 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* ✅ Trusted Companies Marquee */}
       <div className="border border-gray-300 shadow-md mx-2 mt-5 p-6 rounded-md">
         <p className="font-medium mb-3">Trusted by</p>
         <Marquee pauseOnHover={true} speed={40}>
-          <div className="flex justify-center gap-10 lg:gap-16 flex-wrap px-4">
+          <div className="flex justify-center gap-96 lg:gap-16 flex-wrap px-4">
             <a
               href="https://www.microsoft.com"
               target="_blank"
