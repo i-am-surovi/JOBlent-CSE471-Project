@@ -96,3 +96,4 @@
 
 
 - npm install @sentry/node --save
+- npm i @sentry/integrations
