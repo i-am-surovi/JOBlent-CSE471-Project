@@ -4,20 +4,13 @@ import 'dotenv/config';
 
 // Initialize Sentry
 Sentry.init({
-  dsn: "https://46b17cc0907e0d8ac7c6dc296e98af91@o4509880528863232.ingest.us.sentry.io/4509880535875584",
+  dsn: process.env.SENTRY_DSN,
   tracesSampleRate: 1.0,
-  sendDefaultPii: true, // send personal identifiable info
+  sendDefaultPii: true,
 });
 
-// Connect to MongoDB
-const connectDB = async () => {
-  try {
-    await mongoose.connect(`${process.env.MONGODB_URI}/job-portal`);
-    console.log("Database Connected");
-  } catch (err) {
-    console.error("Database connection error:", err);
-    Sentry.captureException(err); // Send DB connection errors to Sentry
-  }
+// Attach Express request handler (instrumentation)
+export const attachSentry = (app) => {
+  app.use(Sentry.Handlers.requestHandler());
+  app.use(Sentry.Handlers.tracingHandler()); // optional for performance
 };
-
-export default connectDB;
