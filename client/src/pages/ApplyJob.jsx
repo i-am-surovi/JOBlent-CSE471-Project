@@ -11,16 +11,17 @@ import Footer from "../components/Footer";
 
 const ApplyJob = () => {
   const { id } = useParams();
-
   const [JobData, setJobData] = useState(null);
-
   const { jobs } = useContext(AppContext);
 
+  // Load applied jobs from localStorage
+  const appliedJobs = JSON.parse(localStorage.getItem("appliedJobs")) || [];
+  const hasApplied = appliedJobs.includes(id);
+
   const fetchjob = async () => {
-    const data = jobs.filter((job) => job._id == id);
+    const data = jobs.filter((job) => job._id === id);
     if (data.length !== 0) {
       setJobData(data[0]);
-      console.log(data[0]);
     }
   };
 
@@ -43,9 +44,7 @@ const ApplyJob = () => {
                 alt=""
               />
               <div className="text-center md:text-left text-neutral-700">
-                <h1 className="text-2xl sm:text-4xl font-medium">
-                  {JobData.title}
-                </h1>
+                <h1 className="text-2xl sm:text-4xl font-medium">{JobData.title}</h1>
                 <div className="flex flex-row flex-wrap max-md:justify-center gap-y-2 gap-6 items-center text-gray-600 mt-2">
                   <span className="flex items-center gap-1">
                     <img src={assets.suitcase_icon} alt="" />
@@ -68,12 +67,15 @@ const ApplyJob = () => {
             </div>
 
             <div className="flex flex-col justify-center text-end text-sm max-md:mx-auto max-md:text-center">
-              <button className="bg-blue-600 p-2.5 px-10 text-white rounded">
-                Apply Now
+              <button
+                disabled={hasApplied}
+                className={`p-2.5 px-10 rounded text-white ${
+                  hasApplied ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600"
+                }`}
+              >
+                {hasApplied ? "Already applied" : "Apply Now"}
               </button>
-              <p className="mt-1 text-gray-600">
-                Posted {moment(JobData.data).fromNow()}
-              </p>
+              <p className="mt-1 text-gray-600">Posted {moment(JobData.data).fromNow()}</p>
             </div>
           </div>
 
@@ -83,21 +85,22 @@ const ApplyJob = () => {
               <div
                 className="rich-text"
                 dangerouslySetInnerHTML={{ __html: JobData.description }}
-              ></div>
-              <button className="bg-blue-600 p-2.5 px-10 text-white rounded mt-10">
-                Apply Now
+              />
+              <button
+                disabled={hasApplied}
+                className={`p-2.5 px-10 rounded text-white mt-10 ${
+                  hasApplied ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600"
+                }`}
+              >
+                {hasApplied ? "Already applied" : "Apply Now"}
               </button>
             </div>
+
             {/* Right Section More jobs */}
             <div className="w-full lg:w-1/3 mt-8 lg:mt-0 lg:ml-8 space-y-5">
               <h2 className="font-bold">More jobs from {JobData.companyId.name}</h2>
               {jobs
-                .filter(
-                  (job) =>
-                    job._id !== JobData._id &&
-                    job.companyId._id === JobData.companyId._id
-                )
-                .filter((job) => true)
+                .filter((job) => job._id !== JobData._id && job.companyId._id === JobData.companyId._id)
                 .slice(0, 4)
                 .map((job, index) => (
                   <JobCard key={index} job={job} />
@@ -106,7 +109,7 @@ const ApplyJob = () => {
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </>
   ) : (
     <Loading />

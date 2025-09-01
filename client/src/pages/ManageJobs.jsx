@@ -1,10 +1,9 @@
-import React from 'react'
-import { manageJobsData } from '../assets/assets'
-import moment from 'moment'
-import { useNavigate } from 'react-router-dom'
+import React from 'react';
+import { manageJobsData } from '../assets/assets';
+import moment from 'moment';
 
 const ManageJobs = () => {
-  const navigate = useNavigate()
+
   return (
     <div className='container p-4 max-w-5xl'>
       <div className='overflow-x-auto'>
@@ -20,9 +19,9 @@ const ManageJobs = () => {
             </tr>
           </thead>
           <tbody>
-            {manageJobsData.map((job,index)=>(
+            {manageJobsData.map((job, index) => (
               <tr key={index} className='text-gray-700'>
-                <td className='py-2 px-4 border-b max-sm:hidden'>{index+1}</td>
+                <td className='py-2 px-4 border-b max-sm:hidden'>{index + 1}</td>
                 <td className='py-2 px-4 border-b'>{job.title}</td>
                 <td className='py-2 px-4 border-b max-sm:hidden'>{moment(job.date).format('ll')}</td>
                 <td className='py-2 px-4 border-b max-sm:hidden'>{job.location}</td>
@@ -35,11 +34,10 @@ const ManageJobs = () => {
           </tbody>
         </table>
       </div>
-      <div className='mt-4 flex justify-end'>
-        <button onClick={()=>navigate('/dashboard/add-job')} className='bg-black text-white py-2 px-4 rounded cursor-pointer'>Add new job</button>
-      </div>
+      {/* If Add Job page exists you can include the button here */}
     </div>
-  )
-}
+  );
+};
 
-export default ManageJobs
+export default ManageJobs;
+
