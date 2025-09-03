@@ -3,6 +3,7 @@ import { Route, Routes, Navigate } from "react-router-dom";
 
 import Home from "./pages/Home";
 import ApplyJob from "./pages/ApplyJob";
+import CompanyPage from "./pages/CompanyPage";
 import ApplyJobForm from "./pages/ApplyJobForm";
 import Application from "./pages/Application";
 import Profile from "./pages/Profile";
@@ -14,13 +15,13 @@ import { useRecruiterAuth } from "./hooks/useRecruiterAuth";
 import RecruiterDashboard from "./pages/recruiterDashboard";
 import ViewApplications from "./pages/ViewApplications";
 import ManageJobs from "./pages/ManageJobs";
+import PostJob from "./pages/PostJob";
 
 import 'quill/dist/quill.snow.css';
 
 const PrivateRoute = ({ children }) => {
   const { isAuthenticated, loading } = useRecruiterAuth();
-  
-  // Show loading spinner while checking authentication
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -31,19 +32,13 @@ const PrivateRoute = ({ children }) => {
       </div>
     );
   }
-  
+
   return isAuthenticated ? children : <Navigate to="/recruiter-login" replace />;
 };
 
 const RecruiterLoginPage = () => {
   const { isAuthenticated } = useRecruiterAuth();
-  
-  // If already authenticated, redirect to dashboard
-  if (isAuthenticated) {
-    return <Navigate to="/dashboard" replace />;
-  }
-  
-  return <RecruiterLogin />;
+  return isAuthenticated ? <Navigate to="/dashboard/manage-jobs" replace /> : <RecruiterLogin />;
 };
 
 const App = () => {
@@ -52,17 +47,30 @@ const App = () => {
   return (
     <div>
       {showRecruiterLogin && <RecruiterLogin />}
+
       <Routes>
+        {/* Public routes */}
         <Route path="/" element={<Home />} />
+
+
+        {/* ApplyJob page with dynamic id */}
         <Route path="/apply-job/:id" element={<ApplyJob />} />
+
+        {/* Company profile page */}
+        <Route path="/company/:id" element={<CompanyPage />} />
+
+        
+        
         <Route path="/apply-job-form/:id" element={<ApplyJobForm />} />
+
+        {/* Other public pages */}
         <Route path="/applications" element={<Application />} />
         <Route path="/profile" element={<Profile />} />
 
-        {/* Recruiter login route with auto-redirect if authenticated */}
+        {/* Recruiter login */}
         <Route path="/recruiter-login" element={<RecruiterLoginPage />} />
 
-        {/* Dashboard and nested protected routes */}
+        {/* Dashboard protected routes */}
         <Route
           path="/dashboard/*"
           element={
@@ -73,11 +81,11 @@ const App = () => {
         >
           <Route path="manage-jobs" element={<ManageJobs />} />
           <Route path="view-applications" element={<ViewApplications />} />
-          {/* When visiting "/dashboard", redirect to "/dashboard/manage-jobs" */}
+          <Route path="post-job" element={<PostJob />} />
           <Route index element={<Navigate to="manage-jobs" replace />} />
         </Route>
 
-        {/* Redirect any undefined route to home instead of recruiter login */}
+        {/* Catch-all route */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </div>
@@ -85,8 +93,3 @@ const App = () => {
 };
 
 export default App;
-
-
-
-
-

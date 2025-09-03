@@ -4,11 +4,13 @@ import { useRecruiterAuth } from '../hooks/useRecruiterAuth';
 
 const Sidebar = () => (
   <div className="w-60 h-screen bg-white border-r flex flex-col py-8 px-6">
-    <h1 className="text-3xl font-bold mb-12">Insider<span className="text-blue-700">jobs</span></h1>
+    <h1 className="text-3xl font-bold mb-12">
+      Insider<span className="text-blue-700">jobs</span>
+    </h1>
     <nav className="flex flex-col gap-4">
       <NavLink
         to="/dashboard/manage-jobs"
-        className={({ isActive }) => 
+        className={({ isActive }) =>
           `px-4 py-3 rounded cursor-pointer hover:bg-blue-50 transition-colors ${
             isActive ? 'bg-blue-100 font-semibold text-blue-700' : 'text-gray-700'
           }`
@@ -18,13 +20,23 @@ const Sidebar = () => (
       </NavLink>
       <NavLink
         to="/dashboard/view-applications"
-        className={({ isActive }) => 
+        className={({ isActive }) =>
           `px-4 py-3 rounded cursor-pointer hover:bg-blue-50 transition-colors ${
             isActive ? 'bg-blue-100 font-semibold text-blue-700' : 'text-gray-700'
           }`
         }
       >
         View Applications
+      </NavLink>
+      <NavLink
+        to="/dashboard/post-job"
+        className={({ isActive }) =>
+          `px-4 py-3 rounded cursor-pointer hover:bg-blue-50 transition-colors ${
+            isActive ? 'bg-blue-100 font-semibold text-blue-700' : 'text-gray-700'
+          }`
+        }
+      >
+        Post Job
       </NavLink>
     </nav>
   </div>
@@ -50,11 +62,13 @@ const RecruiterDashboard = () => {
               <span className="text-gray-600">
                 Welcome, {recruiterData?.name || 'Recruiter'}
               </span>
-              <span className={`px-2 py-1 rounded text-xs font-medium ${
-                authMode === 'local' 
-                  ? 'bg-orange-100 text-orange-600' 
-                  : 'bg-green-100 text-green-600'
-              }`}>
+              <span
+                className={`px-2 py-1 rounded text-xs font-medium ${
+                  authMode === 'local' 
+                    ? 'bg-orange-100 text-orange-600' 
+                    : 'bg-green-100 text-green-600'
+                }`}
+              >
                 {authMode === 'local' ? 'Offline' : 'Online'}
               </span>
             </div>
@@ -67,6 +81,7 @@ const RecruiterDashboard = () => {
           </div>
         </header>
         <section className="flex-1 overflow-auto p-6">
+          {/* This will render the nested routes: Manage Jobs, View Applications, Post Job */}
           <Outlet />
         </section>
       </main>
@@ -75,8 +90,3 @@ const RecruiterDashboard = () => {
 };
 
 export default RecruiterDashboard;
-
-
-
-
-

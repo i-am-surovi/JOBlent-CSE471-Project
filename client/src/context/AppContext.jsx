@@ -1,37 +1,91 @@
 import { createContext, useEffect, useState } from "react";
+import socket from "../utils/socket"; // 👈 shared socket
 import { jobsData } from "../assets/assets";
 
-export const AppContext = createContext()
+export const AppContext = createContext();
 
-export const AppContextProvider = (props) => {
-    const [searchFilter, setSearchFilter] = useState({
-        title:'',
-        location:''
-    })
+export const AppContextProvider = ({ children }) => {
+  const [notifications, setNotifications] = useState([]);
 
-    const [isSearched, setIsSearched] = useState(false)
+  const addNotification = (notification) => {
+    setNotifications((prev) => [notification, ...prev]);
 
-    const [jobs, setJobs] = useState([])
+    // Play sound (optional)
+    const audio = new Audio("/notification.mp3");
+    audio.play().catch(() => console.warn("Audio playback failed"));
+  };
 
-    const [showRecruiterLogin,setShowRecruiterLogin] = useState(false)
+  useEffect(() => {
+    if (!socket) return;
 
-    // Function to fetch jobs
-    const fetchJobs = async () => {
-        setJobs(jobsData)
-    }
+    socket.on("connect", () => {
+      console.log("✅ Connected to server:", socket.id);
+    });
 
-    useEffect(()=>{
-        fetchJobs()
-    },[])
+    socket.on("disconnect", () => {
+      console.log("❌ Disconnected from server");
+    });
 
-    const value = {
-        setSearchFilter, searchFilter,
-        isSearched, setIsSearched,
-        jobs, setJobs,
-        showRecruiterLogin, setShowRecruiterLogin,
-    }
+    socket.on("newJob", (job) => {
+      addNotification({
+        type: "newJob",
+        message: `New job posted: ${job.title}`,
+        jobId: job._id,
+      });
+    });
 
-    return (<AppContext.Provider value={value}>
-        {props.children}
-    </AppContext.Provider>)
-}
+    socket.on("deadlineReminder", (job) => {
+      addNotification({
+        type: "deadline",
+        message: `Deadline approaching: ${job.title}`,
+        jobId: job._id,
+      });
+    });
+
+    socket.on("interviewInvite", (notif) => {
+      addNotification({
+        type: "interview",
+        message: `Interview invitation: ${notif.position || notif.message}`,
+        interviewId: notif._id,
+      });
+    });
+
+    // Cleanup
+    return () => {
+      socket.off("newJob");
+      socket.off("deadlineReminder");
+      socket.off("interviewInvite");
+    };
+  }, []);
+
+  // Job Search
+  const [searchFilter, setSearchFilter] = useState({ title: "", location: "" });
+  const [isSearched, setIsSearched] = useState(false);
+  const [jobs, setJobs] = useState([]);
+
+  useEffect(() => {
+    setJobs(jobsData);
+  }, []);
+
+  const [showRecruiterLogin, setShowRecruiterLogin] = useState(false);
+
+  return (
+    <AppContext.Provider
+      value={{
+        notifications,
+        addNotification,
+        socket,
+        searchFilter,
+        setSearchFilter,
+        isSearched,
+        setIsSearched,
+        jobs,
+        setJobs,
+        showRecruiterLogin,
+        setShowRecruiterLogin,
+      }}
+    >
+      {children}
+    </AppContext.Provider>
+  );
+};

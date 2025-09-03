@@ -274,10 +274,3 @@ const RecruiterLogin = () => {
 };
 
 export default RecruiterLogin;
-
-
-
-
-
-
-
