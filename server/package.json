@@ -2,7 +2,6 @@
   "name": "server",
   "version": "1.0.0",
   "main": "server.js",
-  "type": "module",
   "scripts": {
     "server": "nodemon server.js",
     "start": "node server.js"
@@ -10,28 +9,19 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "description": "",
   "dependencies": {
-    "@clerk/express": "^1.7.26",
-    "@sentry/integrations": "^7.114.0",
-    "@sentry/node": "^10.5.0",
+    "@sentry/node": "^10.9.0",
     "bcrypt": "^6.0.0",
-    "bcryptjs": "^3.0.2",
     "cloudinary": "^2.7.0",
     "cors": "^2.8.5",
-    "dotenv": "^17.2.1",
+    "dotenv": "^17.2.2",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.18.0",
     "multer": "^2.0.2",
-    "node-cron": "^4.2.1",
-    "node-fetch": "^3.3.2",
     "nodemon": "^3.1.10",
-    "path-to-regexp": "^8.3.0",
-    "quill": "^2.0.3",
     "socket.io": "^4.8.1",
-    "socket.io-client": "^4.8.1",
-    "stripe": "^18.5.0",
-    "svix": "^1.75.0"
-  },
-  "description": ""
+    "svix": "^1.42.0"
+  }
 }

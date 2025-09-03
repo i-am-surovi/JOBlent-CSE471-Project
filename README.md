@@ -9,6 +9,7 @@
 - Add Routing : **npm install react-router-dom**        
 - To display Notification : **npm install react-toastify**   
 - Add Richtext Editor for Course Description : **npm install quill**   
+- npm install socket.io-client
 
 # Clerk Setup
 - **npm install @clerk/clerk-react**  [For Frontend]        
@@ -31,6 +32,7 @@
 - npm i bcrypt
 - npm i mongoose nodemon svix@1.42.0
 - npm i cors multer dotenv cloudinary
+- npm install @sentry/node --save
 
 
 # ReUse After Cloning    
