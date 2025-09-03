@@ -11,21 +11,24 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@clerk/express": "^1.7.24",
+    "@clerk/express": "^1.7.26",
     "@sentry/integrations": "^7.114.0",
     "@sentry/node": "^10.5.0",
     "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.2",
     "cloudinary": "^2.7.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.17.2",
+    "mongoose": "^8.18.0",
     "multer": "^2.0.2",
     "nodemon": "^3.1.10",
     "quill": "^2.0.3",
-    "stripe": "^18.4.0",
-    "svix": "^1.42.0"
+    "stripe": "^18.5.0",
+    "svix": "^1.75.0"
   },
   "description": ""
 }
+
+
