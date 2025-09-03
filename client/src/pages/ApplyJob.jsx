@@ -1,4 +1,3 @@
-// src/pages/ApplyJob.jsx
 import React, { useContext, useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import Loading from "../components/Loading";
@@ -15,7 +14,8 @@ const ApplyJob = () => {
   const { jobs } = useContext(AppContext);
   const navigate = useNavigate();
 
-  // Fetch the current job data
+  const [hasApplied, setHasApplied] = useState(false);
+
   const fetchJob = async () => {
     const data = jobs.filter((job) => job._id === id);
     if (data.length !== 0) {
@@ -24,14 +24,19 @@ const ApplyJob = () => {
     }
   };
 
-  // Navigate to ApplyJobForm page
-  const handleApplyNow = () => {
-    navigate(`/apply-job-form/${JobData._id}`);
-  };
-
   useEffect(() => {
     if (jobs.length > 0) fetchJob();
+
+    // Check localStorage for applied jobs
+    const appliedJobs = JSON.parse(localStorage.getItem("appliedJobs")) || [];
+    setHasApplied(appliedJobs.includes(id));
   }, [id, jobs]);
+
+  const handleApplyNow = () => {
+    if (!hasApplied && JobData) {
+      navigate(`/apply-job-form/${JobData._id}`);
+    }
+  };
 
   if (!JobData) return <Loading />;
 
@@ -74,15 +79,17 @@ const ApplyJob = () => {
             {/* Buttons Section */}
             <div className="flex flex-col justify-center text-end text-sm max-md:mx-auto max-md:text-center">
               <div className="flex flex-wrap justify-end max-md:justify-center gap-2">
-                {/* Apply Now navigates to ApplyJobForm */}
+                {/* Button changes based on hasApplied */}
                 <button
-                  className="bg-blue-600 p-2.5 px-10 text-white rounded"
+                  className={`p-2.5 px-10 rounded ${
+                    hasApplied ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 text-white"
+                  }`}
                   onClick={handleApplyNow}
+                  disabled={hasApplied}
                 >
-                  Apply Now
+                  {hasApplied ? "Already Applied" : "Apply Now"}
                 </button>
 
-                {/* View Website Button */}
                 <Link
                   to={`/company/${JobData.companyId._id}`}
                   state={{ from: `/apply-job/${JobData._id}` }}
@@ -103,13 +110,16 @@ const ApplyJob = () => {
                 className="rich-text"
                 dangerouslySetInnerHTML={{ __html: JobData.description }}
               ></div>
-              
-              {/* ✅ Bottom Apply Now button navigates to ApplyJobForm */}
+
+              {/* Bottom button too */}
               <button
-                className="bg-blue-600 p-2.5 px-10 text-white rounded mt-10"
+                className={`p-2.5 px-10 rounded mt-10 ${
+                  hasApplied ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 text-white"
+                }`}
                 onClick={handleApplyNow}
+                disabled={hasApplied}
               >
-                Apply Now
+                {hasApplied ? "Already Applied" : "Apply Now"}
               </button>
             </div>
 
@@ -135,3 +145,5 @@ const ApplyJob = () => {
 };
 
 export default ApplyJob;
+
+

@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 const ApplyJobForm = () => {
   const { id: jobId } = useParams();
   const navigate = useNavigate();
 
+  const [hasApplied, setHasApplied] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -12,6 +13,12 @@ const ApplyJobForm = () => {
     resume: null,
     coverLetter: "",
   });
+
+  useEffect(() => {
+    // Check localStorage on load if jobId is already applied
+    const appliedJobs = JSON.parse(localStorage.getItem("appliedJobs")) || [];
+    setHasApplied(appliedJobs.includes(jobId));
+  }, [jobId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,19 +31,38 @@ const ApplyJobForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (hasApplied) return; // prevent multiple submits
 
-    // Here: normally call backend API to submit application
+    // TODO: Call backend API to submit application here
 
-    // Save jobId in localStorage as applied job
     const appliedJobs = JSON.parse(localStorage.getItem("appliedJobs")) || [];
     if (!appliedJobs.includes(jobId)) {
       appliedJobs.push(jobId);
       localStorage.setItem("appliedJobs", JSON.stringify(appliedJobs));
     }
 
+    setHasApplied(true);
+
     alert("Application submitted successfully!");
-    navigate("/"); // Navigate back to job listing/home
+    navigate("/"); // Redirect after submit
   };
+
+  if (hasApplied) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-4">
+        <div className="max-w-md bg-white p-8 rounded shadow text-center">
+          <h2 className="text-2xl font-semibold mb-4">Already Applied</h2>
+          <p className="mb-6">You have already applied for this job.</p>
+          <button
+            onClick={() => navigate("/")}
+            className="bg-blue-600 text-white px-6 py-2 rounded"
+          >
+            Back to Jobs
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -45,6 +71,9 @@ const ApplyJobForm = () => {
           Apply for Job
         </h2>
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* form fields: fullName, email, phone, resume, coverLetter */}
+          {/* unchanged from your original code */}
+          {/* ... */}
           <div>
             <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
               Full Name<span className="text-red-500">*</span>
@@ -59,7 +88,6 @@ const ApplyJobForm = () => {
               className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm p-2 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50"
             />
           </div>
-
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
               Email<span className="text-red-500">*</span>
@@ -74,7 +102,6 @@ const ApplyJobForm = () => {
               className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm p-2 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50"
             />
           </div>
-
           <div>
             <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
               Phone Number<span className="text-red-500">*</span>
@@ -89,7 +116,6 @@ const ApplyJobForm = () => {
               className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm p-2 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50"
             />
           </div>
-
           <div>
             <label htmlFor="resume" className="block text-sm font-medium text-gray-700">
               Upload Resume (PDF) <span className="text-red-500">*</span>
@@ -104,7 +130,6 @@ const ApplyJobForm = () => {
               className="mt-1 block w-full text-gray-700"
             />
           </div>
-
           <div>
             <label htmlFor="coverLetter" className="block text-sm font-medium text-gray-700">
               Cover Letter
@@ -119,7 +144,6 @@ const ApplyJobForm = () => {
               className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm p-3 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50"
             />
           </div>
-
           <div className="flex justify-center">
             <button
               type="submit"
@@ -135,3 +159,4 @@ const ApplyJobForm = () => {
 };
 
 export default ApplyJobForm;
+
